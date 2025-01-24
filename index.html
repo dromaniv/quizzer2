@@ -407,7 +407,6 @@
         validateBtn.disabled = false;
       } catch (error) {
         console.error('Error loading Universal Sentence Encoder model:', error);
-        alert('Failed to load AI model for validation. The "Validate" feature will be unavailable.');
         validateBtn.disabled = true;
       }
     }
