@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -397,7 +397,7 @@
     // TensorFlow.js Model
     let useModel = null;
     // You can raise or lower this threshold to be more or less strict.
-    const THRESHOLD = 75;
+    const THRESHOLD = 70;
 
     // Load Universal Sentence Encoder model
     async function loadUSEModel() {
@@ -493,14 +493,14 @@
       // Hide validation result
       validateResultEl.style.display = 'none';
 
-      // If "answers" is an array, just join it into one string for display.
+      // Format answers as bullet points if it's an array
       let answersStr = '';
       if (Array.isArray(q.answers)) {
-        answersStr = q.answers.join(' ');
+        answersStr = '<ul>' + q.answers.map(a => `<li>${a}</li>`).join('') + '</ul>';
       } else {
         answersStr = q.answers;
       }
-      answerContentEl.textContent = answersStr;
+      answerContentEl.innerHTML = answersStr;
 
       // Update navigation buttons
       prevBtn.disabled = (index === 0);
@@ -547,12 +547,12 @@
             questions = data;
             shuffleArray(questions);
             localStorage.setItem('shuffledQuestions', JSON.stringify(questions));
-            // Reset variables
-            userAnswers = [];
-            currentIndex = 0;
-            showQuestion(currentIndex);
-            // Clear the textarea
-            answerInputEl.value = '';
+        // Reset variables
+        userAnswers = [];
+        currentIndex = 0;
+        showQuestion(currentIndex);
+        // Clear the textarea
+        answerInputEl.value = '';
           })
           .catch(err => {
             questionTextEl.textContent = 'Error loading questions.';
