@@ -555,6 +555,15 @@
     },
     {
         "group": "GPT",
+        "number": 11,
+        "question": "What are steady-state evolutionary algorithms, and how do they differ?",
+        "answers": [
+            "Steady-state algorithms have no distinct generations; they replace a few individuals at a time.",
+            "An offspring may be added to the population immediately after creation, maintaining a constant population size."
+        ]
+    },
+    {
+        "group": "GPT",
         "number": 12,
         "question": "How does the use of multiple neighborhoods improve local search performance?",
         "answers": [
