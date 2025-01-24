@@ -536,6 +536,16 @@
     },
     {
         "group": "GPT",
+        "number": 9,
+        "question": "Explain the Holland schema theorem and its implications for evolutionary algorithms.",
+        "answers": [
+            "The Holland schema theorem predicts the schema’s growth or decline over generations in genetic algorithms.",
+            "Short, low-order and well-adapted schemas tend to grow exponentially, contributing to the population's convergence.",
+            "It provides insights into the impact of crossover and mutation on building blocks and the convergence of the population."
+        ]
+    },
+    {
+        "group": "GPT",
         "number": 10,
         "question": "Explain how penalty functions handle constraints in evolutionary algorithms.",
         "answers": [
