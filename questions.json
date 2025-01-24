@@ -487,6 +487,27 @@
         ]
     },
     {
+      "group": "GPT",
+      "number": 4,
+      "question": "What is the role of hyperheuristics in improving heuristic-based optimization techniques?",
+      "answers": [
+          "Hyperheuristics aim to select or generate heuristics automatically to adapt optimization processes to specific problems dynamically.",
+          "They adjust the probabilities of using individual heuristics based on their performance, which can be guided by statistical rules or AI methods like reinforcement learning.",
+          "Hyperheuristics can improve computational efficiency and solution quality by tailoring the selection of operators during the optimization process."
+        ]
+    },
+    {
+        "group": "GPT",
+        "number": 5,
+        "question": "Explain the concept of variable neighborhood local search (VNLS) and its advantages.",
+        "answers": [
+            "VNLS systematically changes the neighborhood structure to escape local optima and explore a broader solution space.",
+            "It starts with simpler neighborhoods, ensuring faster convergence to a relatively good solution, and then uses more complex neighborhoods for further refinement.",
+            "The method's flexibility allows for balancing computational effort with solution quality by varying neighborhood complexity.",
+            "VNLS ensures that the global optimum is a local optimum across all considered neighborhood structures."
+        ]
+    }, 
+    {
         "group": "GPT",
         "number": 6,
         "question": "How does elitism influence the behavior of evolutionary algorithms?",
