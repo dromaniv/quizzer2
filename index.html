@@ -353,14 +353,28 @@
     const completedMessageEl = document.getElementById('completedMessage');
     const questionSectionEl = document.getElementById('questionSection');
 
-    // Load questions, then shuffle
+    // Load questions, then shuffle if necessary
     fetch('questions.json')
       .then(resp => resp.json())
       .then(data => {
-        questions = data;
-        shuffleArray(questions);
+        // Check if shuffled questions are already stored
+        const savedShuffledQuestions = localStorage.getItem('shuffledQuestions');
+        if (savedShuffledQuestions) {
+          questions = JSON.parse(savedShuffledQuestions);
+        } else {
+          questions = data;
+          shuffleArray(questions);
+          localStorage.setItem('shuffledQuestions', JSON.stringify(questions));
+        }
+
         if (questions.length > 0) {
-          // Check if there's a saved index
+          // Load userAnswers
+          const savedAnswers = localStorage.getItem('userAnswers');
+          if (savedAnswers) {
+            userAnswers = JSON.parse(savedAnswers);
+          }
+
+          // Load currentIndex
           const savedIndex = localStorage.getItem('currentIndex');
           if (savedIndex !== null && !isNaN(savedIndex)) {
             currentIndex = parseInt(savedIndex, 10);
@@ -369,6 +383,7 @@
               currentIndex = 0;
             }
           }
+
           showQuestion(currentIndex);
         } else {
           questionTextEl.textContent = 'No questions found.';
@@ -434,8 +449,13 @@
       if (currentIndex < questions.length - 1) {
         currentIndex++;
         showQuestion(currentIndex);
+        saveCurrentIndex();
       }
-      // No action when on the last question since the button is disabled
+      // Optionally, show completed message if last question is reached
+      if (currentIndex === questions.length - 1) {
+        completedMessageEl.style.display = 'block';
+        questionSectionEl.style.display = 'none';
+      }
     });
 
     // Prev button
@@ -443,20 +463,40 @@
       if (currentIndex > 0) {
         currentIndex--;
         showQuestion(currentIndex);
+        saveCurrentIndex();
       }
     });
 
     // Restart Quiz button
     restartBtn.addEventListener('click', () => {
-      if (confirm('Are you sure you want to restart the quiz? This will clear all your answers.')) {
-        // Clear localStorage
+      if (confirm('Are you sure you want to restart the quiz? This will clear all your answers and reshuffle the questions.')) {
+        // Clear localStorage items
+        localStorage.removeItem('shuffledQuestions');
         localStorage.removeItem('userAnswers');
         localStorage.removeItem('currentIndex');
-        // Reset variables
-        userAnswers = [];
-        currentIndex = 0;
-        shuffleArray(questions);
-        showQuestion(currentIndex);
+
+        // Fetch the questions again and reshuffle
+        fetch('questions.json')
+          .then(resp => resp.json())
+          .then(data => {
+            questions = data;
+            shuffleArray(questions);
+            localStorage.setItem('shuffledQuestions', JSON.stringify(questions));
+            // Reset variables
+            userAnswers = [];
+            currentIndex = 0;
+            showQuestion(currentIndex);
+            // Clear the textarea
+            answerInputEl.value = '';
+          })
+          .catch(err => {
+            questionTextEl.textContent = 'Error loading questions.';
+            console.error(err);
+            // Disable navigation buttons on error
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            restartBtn.disabled = true; // Disable restart on error
+          });
       }
     });
 
@@ -513,37 +553,22 @@
     // Store the user's answer in the userAnswers array as they type
     answerInputEl.addEventListener('input', () => {
       userAnswers[currentIndex] = answerInputEl.value;
-    });
-
-    // Optional: Save user answers to localStorage to persist across sessions
-    // Load saved answers if available
-    window.addEventListener('load', () => {
-      const savedAnswers = localStorage.getItem('userAnswers');
-      if (savedAnswers) {
-        userAnswers = JSON.parse(savedAnswers);
-      }
-      const savedIndex = localStorage.getItem('currentIndex');
-      if (savedIndex !== null && !isNaN(savedIndex)) {
-        currentIndex = parseInt(savedIndex, 10);
-        // Ensure the saved index is within bounds
-        if (currentIndex < 0 || currentIndex >= questions.length) {
-          currentIndex = 0;
-        }
-      }
-      if (questions.length > 0) {
-        showQuestion(currentIndex);
-      }
-    });
-
-    // Save answers to localStorage whenever they are updated
-    answerInputEl.addEventListener('input', () => {
-      userAnswers[currentIndex] = answerInputEl.value;
       localStorage.setItem('userAnswers', JSON.stringify(userAnswers));
     });
 
-    // Optional: Save current index to localStorage to remember last question
-    window.addEventListener('beforeunload', () => {
+    // ---------- Save Current Index ----------
+    function saveCurrentIndex() {
       localStorage.setItem('currentIndex', currentIndex);
+    }
+
+    // Save current index to localStorage whenever it's updated
+    // This is already handled in the next and prev button event listeners
+
+    // ---------- Save Current Index on Page Unload ----------
+    window.addEventListener('beforeunload', () => {
+      saveCurrentIndex();
+      // 'userAnswers' are already saved on input.
+      // 'shuffledQuestions' are stored when assigned.
     });
 
   </script>
