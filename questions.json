@@ -558,7 +558,7 @@
         "number": 11,
         "question": "What are steady-state evolutionary algorithms, and how do they differ?",
         "answers": [
-            "Steady-state algorithms have no distinct generations; they replace a few individuals at a time.",
+            "Steady-state algorithms have no distinct generations; new offspring replace existing individuals.",
             "An offspring may be added to the population immediately after creation, maintaining a constant population size."
         ]
     },
