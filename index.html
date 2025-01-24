@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Evolutionary Quiz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Favicon Links -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <!-- <https://favicon.io/emoji-favicons/monkey> -->
+  <style>
+    /* ---------- Light Theme (default) ---------- */
+    :root {
+      --background: #f5f7fa;
+      --text-color: #333;
+      --card-bg: #fff;
+      --card-shadow: rgba(0, 0, 0, 0.15);
+      --accent-color: #3498db;
+      --accent-hover: #2980b9;
+      --border-radius: 6px;
+      --answer-bg-light: #f0f8ff; /* Light bluish */
+      --answer-bg-dark: #2a3a4a;  /* Darker bluish for dark theme */
+    }
+
+    /* ---------- Dark Theme Overrides ---------- */
+    [data-theme="dark"] {
+      --background: #1a1a1a;
+      --text-color: #e0e0e0;
+      --card-bg: #2d2d2d;
+      --card-shadow: rgba(0, 0, 0, 0.3);
+      --accent-color: #2980b9;
+      --accent-hover: #3498db;
+    }
+
+    /* ---------- Global Layout & Container ---------- */
+    body {
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: var(--background);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      min-height: 100vh;
+      justify-content: center;
+      align-items: center;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .container {
+      background: var(--card-bg);
+      box-shadow: 0 2px 8px var(--card-shadow);
+      border-radius: var(--border-radius);
+      width: 90%;
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+      color: var(--accent-color);
+    }
+
+    /* ---------- Question & Answer Areas ---------- */
+    .question-number {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .question-text {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+
+    /* Auto-resizing textarea */
+    textarea {
+      width: 100%;
+      min-height: 80px;
+      padding: 10px;
+      font-size: 0.95rem;
+      border: 1px solid #ccc;
+      border-radius: var(--border-radius);
+      outline: none;
+      background: var(--background);
+      color: var(--text-color);
+      transition: background-color 0.3s, color 0.3s;
+      resize: none; /* We'll auto-resize in JS, so disable manual handle */
+      box-sizing: border-box; /* ensures scrollHeight usage is accurate */
+      overflow: hidden; /* Hide scrollbar */
+    }
+
+    .answer-section {
+      margin-top: 1rem;
+      background: var(--answer-bg-light);
+      border-left: 4px solid var(--accent-color);
+      padding: 10px;
+      border-radius: var(--border-radius);
+      display: none; /* hidden by default */
+      transition: background-color 0.3s;
+    }
+    [data-theme="dark"] .answer-section {
+      background: var(--answer-bg-dark);
+    }
+
+    .answer-section h3 {
+      margin-top: 0;
+      font-size: 1rem;
+      color: var(--accent-color);
+    }
+
+    .answer-text {
+      margin: 0.5rem 0 0;
+      line-height: 1.4;
+    }
+
+    /* ---------- Buttons ---------- */
+    .buttons-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .buttons-row button {
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-size: 0.95rem;
+    }
+
+    /* Specific Button Styles */
+    #askGPTBtn {
+      background-color: purple;
+    }
+    #askGPTBtn:hover {
+      background-color: #6a0dad; /* Darker purple */
+    }
+
+    #toggleAnswerBtn {
+      background-color: green;
+    }
+    #toggleAnswerBtn:hover {
+      background-color: #006400; /* Darker green */
+    }
+
+    /* New Restart Button Styles */
+    #restartBtn {
+      background-color: red;
+    }
+    #restartBtn:hover {
+      background-color: darkred;
+    }
+
+    /* Navigation buttons container */
+    .navigation-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .navigation-buttons button {
+      background: var(--accent-color);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-size: 0.95rem;
+      min-width: 100px;
+      flex: 1;
+    }
+    .navigation-buttons button:hover {
+      background: var(--accent-hover);
+    }
+
+    /* Disabled button styles */
+    .navigation-buttons button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Show/Hide Answer Toggle arrow icons */
+    #toggleAnswerBtn.active::after {
+      content: '▲';
+      margin-left: 6px;
+      font-size: 0.8rem;
+    }
+    #toggleAnswerBtn::after {
+      content: '▼';
+      margin-left: 6px;
+      font-size: 0.8rem;
+    }
+
+    /* Completed message */
+    #completedMessage {
+      margin-top: 20px;
+      text-align: center;
+      font-weight: bold;
+      color: #666;
+      display: none;
+      font-size: 1.2rem;
+    }
+    [data-theme="dark"] #completedMessage {
+      color: #bbb;
+    }
+
+    /* ---------- Theme Toggle Button ---------- */
+    #themeToggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border: none;
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 5px var(--card-shadow);
+      transition: transform 0.2s;
+      font-size: 1rem;
+    }
+    #themeToggle:hover {
+      transform: scale(1.1);
+    }
+
+    /* ---------- Responsive for Mobile ---------- */
+    @media (max-width: 600px) {
+      .container {
+        padding: 15px;
+      }
+
+      .question-text {
+        font-size: 1rem;
+      }
+
+      .buttons-row button,
+      .navigation-buttons button {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      #themeToggle {
+        padding: 8px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Dark/Light Theme Toggle Button -->
+  <button id="themeToggle" aria-label="Toggle dark mode">🌙</button>
+
+  <div class="container" id="quizContainer">
+    <h1>Evolutionary Quiz</h1>
+
+    <!-- Question Section -->
+    <div id="questionSection">
+      <div class="question-number" id="questionNumber">Question x of y</div>
+      <div class="question-text" id="questionText">Loading question...</div>
+
+      <textarea
+        id="answerInput"
+        placeholder="Type your answer here..."
+      ></textarea>
+
+      <div class="buttons-row">
+        <button id="askGPTBtn">Ask ChatGPT</button>
+        <button id="toggleAnswerBtn">Show Answer</button>
+      </div>
+
+      <!-- Official Answer hidden section -->
+      <div id="officialAnswer" class="answer-section">
+        <h3>Correct Answer</h3>
+        <div id="answerContent" class="answer-text"></div>
+      </div>
+
+      <!-- Navigation buttons -->
+      <div class="navigation-buttons">
+        <button id="prevBtn">Previous</button>
+        <button id="restartBtn">Restart Quiz</button>
+        <button id="nextBtn">Next</button>
+      </div>
+    </div>
+
+    <!-- Completed Message -->
+    <div id="completedMessage">You have reached the end of the quiz!</div>
+  </div>
+
+  <script>
+    // ---------- Dark/Light Theme Toggle Script ----------
+    const themeToggle = document.getElementById('themeToggle');
+
+    function getPreferredTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        return savedTheme;
+      }
+      // system preference fallback
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      themeToggle.textContent = (theme === 'dark') ? '☀️' : '🌙';
+    }
+
+    // Initialize theme on load
+    applyTheme(getPreferredTheme());
+
+    // Toggle event
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+      applyTheme(newTheme);
+    });
+
+    // If user has no preference, react to system changes in real time
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!localStorage.getItem('theme')) {
+        applyTheme(e.matches ? 'dark' : 'light');
+      }
+    });
+
+    // ---------- Quiz Logic ----------
+    let questions = [];
+    let currentIndex = 0;
+    let userAnswers = []; // Array to store user answers
+
+    const questionNumberEl = document.getElementById('questionNumber');
+    const questionTextEl = document.getElementById('questionText');
+    const answerInputEl = document.getElementById('answerInput');
+
+    const askGPTBtn = document.getElementById('askGPTBtn');
+    const toggleAnswerBtn = document.getElementById('toggleAnswerBtn');
+    const officialAnswerEl = document.getElementById('officialAnswer');
+    const answerContentEl = document.getElementById('answerContent');
+
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const restartBtn = document.getElementById('restartBtn'); // New Restart Button
+    const completedMessageEl = document.getElementById('completedMessage');
+    const questionSectionEl = document.getElementById('questionSection');
+
+    // Load questions, then shuffle
+    fetch('questions.json')
+      .then(resp => resp.json())
+      .then(data => {
+        questions = data;
+        shuffleArray(questions);
+        if (questions.length > 0) {
+          // Check if there's a saved index
+          const savedIndex = localStorage.getItem('currentIndex');
+          if (savedIndex !== null && !isNaN(savedIndex)) {
+            currentIndex = parseInt(savedIndex, 10);
+            // Ensure the saved index is within bounds
+            if (currentIndex < 0 || currentIndex >= questions.length) {
+              currentIndex = 0;
+            }
+          }
+          showQuestion(currentIndex);
+        } else {
+          questionTextEl.textContent = 'No questions found.';
+          // Disable navigation buttons if no questions
+          prevBtn.disabled = true;
+          nextBtn.disabled = true;
+          restartBtn.disabled = true; // Disable restart if no questions
+        }
+      })
+      .catch(err => {
+        questionTextEl.textContent = 'Error loading questions.';
+        console.error(err);
+        // Disable navigation buttons on error
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+        restartBtn.disabled = true; // Disable restart on error
+      });
+
+    // Display a question by index
+    function showQuestion(index) {
+      if (index < 0 || index >= questions.length) return;
+
+      completedMessageEl.style.display = 'none';
+      questionSectionEl.style.display = 'block';
+
+      const q = questions[index];
+      const total = questions.length;
+
+      questionNumberEl.textContent = `Question ${index + 1} of ${total}`;
+      questionTextEl.innerHTML = q.question + ' <i>(id:' + q.number + ' ' + q.group + ')</i>';
+      
+      // Set the textarea value to the saved answer or empty string
+      answerInputEl.value = userAnswers[index] || '';
+
+      // Hide official answer
+      officialAnswerEl.style.display = 'none';
+      toggleAnswerBtn.textContent = 'Show Answer';
+      toggleAnswerBtn.classList.remove('active');
+
+      // If "answers" is an array, create a bullet list; otherwise just a paragraph
+      let answersStr = '';
+      if (Array.isArray(q.answers)) {
+        answersStr = `<ul style="margin-left:20px;">` +
+          q.answers.map(a => `<li>${a}</li>`).join('') +
+          `</ul>`;
+      } else {
+        answersStr = `<p>${q.answers}</p>`;
+      }
+      answerContentEl.innerHTML = answersStr;
+
+      // Update navigation buttons
+      prevBtn.disabled = (index === 0);
+      nextBtn.disabled = (index === total - 1);
+      restartBtn.disabled = false; // Enable restart button
+      nextBtn.textContent = 'Next';
+    }
+
+    // Next button
+    nextBtn.addEventListener('click', () => {
+      if (currentIndex < questions.length - 1) {
+        currentIndex++;
+        showQuestion(currentIndex);
+      }
+      // No action when on the last question since the button is disabled
+    });
+
+    // Prev button
+    prevBtn.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        showQuestion(currentIndex);
+      }
+    });
+
+    // Restart Quiz button
+    restartBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to restart the quiz? This will clear all your answers.')) {
+        // Clear localStorage
+        localStorage.removeItem('userAnswers');
+        localStorage.removeItem('currentIndex');
+        // Reset variables
+        userAnswers = [];
+        currentIndex = 0;
+        shuffleArray(questions);
+        showQuestion(currentIndex);
+      }
+    });
+
+    // Show/Hide official answer
+    toggleAnswerBtn.addEventListener('click', () => {
+      if (officialAnswerEl.style.display === 'none') {
+        officialAnswerEl.style.display = 'block';
+        toggleAnswerBtn.textContent = 'Hide Answer';
+        toggleAnswerBtn.classList.add('active');
+      } else {
+        officialAnswerEl.style.display = 'none';
+        toggleAnswerBtn.textContent = 'Show Answer';
+        toggleAnswerBtn.classList.remove('active');
+      }
+    });
+
+    // Ask GPT
+    askGPTBtn.addEventListener('click', () => {
+      if (currentIndex < 0 || currentIndex >= questions.length) return;
+
+      const questionText = questions[currentIndex].question || "";
+      const userAnswer = answerInputEl.value.trim();
+
+      if (!userAnswer) {
+        alert("Please type your answer first!");
+        return;
+      }
+
+      const prompt = `Question: ${questionText}\n\nMy answer:\n${userAnswer}\n\nPlease verify correctness and provide any improvements.`;
+      const chatGPTUrl = `https://chat.openai.com/?temporary-chat=true&model=gpt-4o&hints=search&q=${encodeURIComponent(prompt)}`;
+      window.open(chatGPTUrl, '_blank');
+    });
+
+    // ---------- Utility: Shuffle (Fisher-Yates) ----------
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    // ---------- Auto-Resize Textarea ----------
+    // Whenever the user types, we adjust the textarea height based on scrollHeight
+    answerInputEl.addEventListener('input', autoResize);
+
+    function autoResize() {
+      // Reset height to auto to correctly measure scrollHeight
+      this.style.height = 'auto';
+      // Then set it to the scroll height + a bit of padding
+      this.style.height = (this.scrollHeight) + 'px';
+    }
+
+    // ---------- Save User Answer on Input ----------
+    // Store the user's answer in the userAnswers array as they type
+    answerInputEl.addEventListener('input', () => {
+      userAnswers[currentIndex] = answerInputEl.value;
+    });
+
+    // Optional: Save user answers to localStorage to persist across sessions
+    // Load saved answers if available
+    window.addEventListener('load', () => {
+      const savedAnswers = localStorage.getItem('userAnswers');
+      if (savedAnswers) {
+        userAnswers = JSON.parse(savedAnswers);
+      }
+      const savedIndex = localStorage.getItem('currentIndex');
+      if (savedIndex !== null && !isNaN(savedIndex)) {
+        currentIndex = parseInt(savedIndex, 10);
+        // Ensure the saved index is within bounds
+        if (currentIndex < 0 || currentIndex >= questions.length) {
+          currentIndex = 0;
+        }
+      }
+      if (questions.length > 0) {
+        showQuestion(currentIndex);
+      }
+    });
+
+    // Save answers to localStorage whenever they are updated
+    answerInputEl.addEventListener('input', () => {
+      userAnswers[currentIndex] = answerInputEl.value;
+      localStorage.setItem('userAnswers', JSON.stringify(userAnswers));
+    });
+
+    // Optional: Save current index to localStorage to remember last question
+    window.addEventListener('beforeunload', () => {
+      localStorage.setItem('currentIndex', currentIndex);
+    });
+
+  </script>
+</body>
+</html>

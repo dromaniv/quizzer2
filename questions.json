@@ -1,0 +1,461 @@
+[
+    {
+      "group": "Group 1",
+      "number": 1,
+      "question": "Describe the ideas of the three main mechanisms of selection in evolutionary algorithms.",
+      "answers": [
+        "Roulette-wheel: Each solution’s selection probability is proportional to its fitness.",
+        "Tournament: Randomly choose K solutions and pick the best; larger K means stronger selection pressure.",
+        "Elite (Elitism): Automatically copy top solutions into the next generation."
+      ]
+    },
+    {
+      "group": "Group 1",
+      "number": 2,
+      "question": "Why doesn’t the No Free Lunch theorem have to apply to optimization tasks that are frequently encountered in practice?",
+      "answers": [
+        "Real-world problems do not satisfy NFL’s assumption of a uniformly random problem distribution.",
+        "We often have extra knowledge/structure that algorithms can exploit.",
+        "Practical tasks belong to more specialized classes of functions, not the entire set of all possible functions."
+      ]
+    },
+    {
+      "group": "Group 1",
+      "number": 3,
+      "question": "What is the idea of regret heuristics?",
+      "answers": [
+        "A construction heuristic that considers the ‘regret’ of not choosing a near-best option now.",
+        "Regret is typically the cost difference between the best insertion choice and the next-best choices.",
+        "We pick the element with the highest total regret to minimize missed opportunities later."
+      ]
+    },
+    {
+      "group": "Group 1",
+      "number": 4,
+      "question": "Discuss the general idea of greedy construction heuristics. What are their advantages and disadvantages?",
+      "answers": [
+        "Greedy methods pick the best local (immediate) option at each step until a full solution is formed.",
+        "Advantages: Simple to implement, fast, can provide quick approximate solutions.",
+        "Disadvantages: No global optimality guarantee, easily trapped in poor solutions, no randomness."
+      ]
+    },
+    {
+      "group": "Group 1",
+      "number": 5,
+      "question": "How and why should the duration (number of iterations) of the local search and the quality of the local optima change during the operation of a good hybrid evolutionary algorithm?",
+      "answers": [
+        "In early stages, use shorter local searches to maintain diversity and avoid premature convergence.",
+        "In later stages, use longer local searches to intensify and refine promising regions for higher-quality local optima."
+      ]
+    },
+    {
+      "group": "Group 1",
+      "number": 6,
+      "question": "How could quantum Grover’s algorithm for search be used in optimization?",
+      "answers": [
+        "View the problem as searching among N candidates; Grover’s can find the best one in O(√N) calls.",
+        "This gives a quadratic speedup over naive search, but still exponential for NP-hard problems.",
+        "Requires an oracle labeling optimal solutions versus non-optimal."
+      ]
+    },
+    {
+      "group": "Group 2",
+      "number": 1,
+      "question": "Describe the general idea of Tabu search and its most important extensions.",
+      "answers": [
+        "Tabu Search allows moves that may worsen the solution (to escape local minima).",
+        "Maintains a ‘tabu list’ of forbidden solutions or moves to avoid cycling.",
+        "Extensions include Reactive Tabu (adapts tabu-list length) and Aspiration Criteria (override tabu for very good moves)."
+      ]
+    },
+    {
+      "group": "Group 2",
+      "number": 2,
+      "question": "Describe the impact of the length of the tabu list. What are the methods to decide how long the list should be?",
+      "answers": [
+        "Short tabu list: more aggressive exploration, higher risk of cycles.",
+        "Long tabu list: fewer cycles but can block many moves and stall progress.",
+        "Reactive strategies dynamically adjust the list length to balance these trade-offs."
+      ]
+    },
+    {
+      "group": "Group 2",
+      "number": 3,
+      "question": "What is the impact of the simplest extension of local search that is used as a baseline for the more complex ones?",
+      "answers": [
+        "It introduces a small degree of randomness or diversification.",
+        "Prevents immediate entrapment in local optima.",
+        "Serves as a straightforward benchmark to compare advanced methods."
+      ]
+    },
+    {
+      "group": "Group 2",
+      "number": 4,
+      "question": "Describe in general how a metaheuristics algorithm works.",
+      "answers": [
+        "Metaheuristics are iterative frameworks guiding lower-level heuristics to balance exploration/exploitation.",
+        "Common steps: Initialization, Evaluate, Modify (via neighborhood or genetic operators), Select, Repeat.",
+        "Stop when a condition (e.g., iteration limit or convergence) is met."
+      ]
+    },
+    {
+      "group": "Group 2",
+      "number": 5,
+      "question": "Describe basic crossover operators in genetic algorithms.",
+      "answers": [
+        "Single-point: split the chromosome at one point, swap tails.",
+        "Multi-point: split at multiple points, swap alternating segments.",
+        "Uniform: each gene is randomly chosen from one of the two parents."
+      ]
+    },
+    {
+      "group": "Group 2",
+      "number": 6,
+      "question": "Describe the general idea of quantum Grover’s algorithm.",
+      "answers": [
+        "Initialize qubits in a superposition of all possible solutions.",
+        "Mark optimal solutions (oracle), apply diffusion to amplify them.",
+        "Repeat ~√N times, then measure the qubits to retrieve the optimal solution."
+      ]
+    },
+  
+    {
+      "group": "Other",
+      "number": 1,
+      "question": "Explain the principle of the branch and bound method.",
+      "answers": [
+        "Branch-and-bound organizes exhaustive search in a tree structure.",
+        "Compute upper/lower bounds for subproblems; prune branches whose bounds cannot lead to a better solution.",
+        "Avoids exploring hopeless regions of the search space."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 2,
+      "question": "Discuss the ‘no free lunch’ theorem claim. What does it say and under what assumptions?",
+      "answers": [
+        "NFL states that all optimization algorithms perform equally if averaged over all possible problems.",
+        "Key assumption: problems are uniformly distributed (no extra knowledge).",
+        "In practice, domain structure means some algorithms can do better than others."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 3,
+      "question": "Describe the ideas of the three main selection mechanisms in evolutionary algorithms.",
+      "answers": [
+        "Roulette-wheel: choose solutions with probability proportional to fitness.",
+        "Tournament: pick K at random, select the best.",
+        "Elitism: carry top solutions forward unchanged."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 4,
+      "question": "Describe the island model and why it is used.",
+      "answers": [
+        "Divide the population into multiple sub-populations (islands).",
+        "Each evolves mostly independently; occasionally exchange (‘migrate’) some individuals.",
+        "Helps maintain diversity and combine good traits from each island."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 5,
+      "question": "Explain measuring qubits in a quantum system.",
+      "answers": [
+        "A qubit can be in a superposition of ‘0’ and ‘1’.",
+        "Measurement collapses it to either 0 or 1 with certain probability.",
+        "Unlike classical bits, unobserved qubits hold probabilistic amplitudes rather than definite values."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 6,
+      "question": "Discuss time optimization in local search regarding evaluation of neighbor solutions.",
+      "answers": [
+        "Naively recomputing the entire objective from scratch is slow.",
+        "Instead, calculate the ‘delta’ (the incremental change) for each local move.",
+        "Greatly reduces time spent evaluating neighbors (e.g., in TSP, only recalc the affected edges)."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 7,
+      "question": "State the idea of an intuitive proof of the ‘no free lunch’ theorem.",
+      "answers": [
+        "Shows that over all possible functions, each algorithm’s performance averages out the same.",
+        "Any gain on one subset of problems is offset by losses on another subset.",
+        "Requires uniform distribution over the space of problems."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 8,
+      "question": "Hybrid evolutionary algorithms: how do they combine advantages of local search and EAs?",
+      "answers": [
+        "Local search quickly refines solutions into local optima.",
+        "EA provides global diversity and exploration of the search space.",
+        "Combining them can yield faster convergence and better final solutions."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 9,
+      "question": "Discuss the autocorrelation coefficient (ruggedness) and its impact on TSP neighborhood operators.",
+      "answers": [
+        "Autocorrelation measures how fitness changes with small solution changes.",
+        "High autocorrelation: small moves yield small fitness changes (smoother landscape).",
+        "In TSP, edge swaps are often less disruptive than node swaps; they preserve more structure, leading to higher autocorrelation."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 10,
+      "question": "What is the idea of greedy regret heuristics?",
+      "answers": [
+        "Similar to standard greedy, but account for ‘regret’ of not picking near-best choices.",
+        "Pick the candidate that leads to the highest regret if omitted.",
+        "Improves on purely local decisions by considering future impact."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 11,
+      "question": "For which problems do greedy heuristics provide a guaranteed approximation?",
+      "answers": [
+        "When the objective is submodular and monotonic (like Max Coverage).",
+        "They can guarantee (1 - 1/e) approximation in certain set-cover-like problems.",
+        "Minimal Spanning Tree is also optimally solvable by a greedy method (Kruskal/Prim)."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 12,
+      "question": "How can greedy heuristics be randomized?",
+      "answers": [
+        "Use random starting points or tie-breaking.",
+        "GRASP: build solutions using a restricted candidate list (RCL) of top options, pick randomly among them.",
+        "Inject randomness to avoid deterministic, single-path construction."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 13,
+      "question": "What are the mechanisms to prevent premature convergence in evolutionary algorithms?",
+      "answers": [
+        "Removing duplicate solutions or repeated fitness values.",
+        "Crowding, Restricted Tournament, or Clearing to keep population diverse.",
+        "Fitness sharing, random immigrants, island models, or controlled elitism."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 14,
+      "question": "How and why should the running time of local search and the quality of local optima change in a good hybrid EA?",
+      "answers": [
+        "Early: shorter local searches to avoid losing diversity.",
+        "Later: longer searches to intensify exploitation in promising regions."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 15,
+      "question": "How can the performance of hybrid evolutionary algorithms be explained from the local search and EA perspectives?",
+      "answers": [
+        "LS perspective: crossover gives better starting points for local improvement.",
+        "EA perspective: restricting to local optima accelerates the global search by focusing on higher-quality solutions."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 16,
+      "question": "For which problems are greedy heuristics optimal? Do they guarantee the optimal solution?",
+      "answers": [
+        "They are optimal for certain classes of problems like finding a Minimum Spanning Tree (a special case of a matroid).",
+        "In general, no guarantee of global optimality except in specific problem structures (e.g., matroids)."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 17,
+      "question": "Explain the link to weighted matroids for guaranteeing greedy optimality.",
+      "answers": [
+        "A problem forms a weighted matroid if it meets certain independence/closure properties.",
+        "Greedy selects elements by highest weight while preserving feasibility and achieves an optimal solution.",
+        "Classic example: MST or certain scheduling tasks."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 18,
+      "question": "What are the applications of greedy heuristics in metaheuristics?",
+      "answers": [
+        "Creating good initial solutions (e.g., TSP nearest neighbor start).",
+        "‘Repair’ steps in Large Neighborhood Search (destroy & repair).",
+        "Quick approximate solutions for partial or sub-problems."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 19,
+      "question": "Briefly describe ways constraints are handled in metaheuristic algorithms.",
+      "answers": [
+        "Penalty functions added to the objective for constraint violations.",
+        "Repair operators that fix infeasible solutions (e.g., remove overlaps or capacity excesses).",
+        "Using specialized operators that only generate or accept feasible solutions."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 20,
+      "question": "The difference between ‘greedy’ and ‘steepest’ local search, and the practical effects.",
+      "answers": [
+        "Greedy LS: accept the first improving move found.",
+        "Steepest LS: examine all neighbors, choose the best improvement.",
+        "Greedy is faster per iteration but may yield worse solutions; steepest is more thorough but slower."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 21,
+      "question": "The general concept of metaheuristics.",
+      "answers": [
+        "High-level frameworks that guide local/improvement heuristics.",
+        "Combine exploration (global) and exploitation (local).",
+        "Not a single solution method, but an adaptable ‘recipe’ for diverse problems."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 22,
+      "question": "What are the main criteria for the experimental evaluation of metaheuristics?",
+      "answers": [
+        "Solution quality (accuracy, final objective value).",
+        "Computation time (speed or runtime).",
+        "Trade-off and stability across multiple runs (consistency)."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 23,
+      "question": "Describe the Tabu search method and its most important extensions. How does the Tabu list work?",
+      "answers": [
+        "Tabu Search may accept worse moves to escape local minima.",
+        "Tabu list forbids revisiting solutions or moves, preventing cycling.",
+        "Extensions: variable list size, aspiration to allow overriding the tabu if a move is very good."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 24,
+      "question": "What are perturbations and where are they used?",
+      "answers": [
+        "Larger-than-usual randomized ‘moves’ used in Iterated Local Search (ILS).",
+        "Prevent returning to the same local optimum by shaking up the solution.",
+        "Balance: too small => no escape; too large => near-random restarts."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 25,
+      "question": "Long-term memory in Tabu search—what is it, how and why to use it?",
+      "answers": [
+        "Tracks frequency of visited solutions, moves, or edges over time.",
+        "Helps build new solutions for diversification or intensification (e.g., pick rarely used edges).",
+        "Prevents stagnation and fosters exploration of new areas."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 26,
+      "question": "General description of the simulated annealing method.",
+      "answers": [
+        "Inspired by the annealing process in physics (temperature cooling).",
+        "Sometimes accepts worse solutions with probability depending on ‘temperature’ and solution quality loss.",
+        "Temperature decreases over time: high => random walk, low => local search."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 27,
+      "question": "What local features of the landscape are related to the efficiency of local search?",
+      "answers": [
+        "Number of local minima and their distribution.",
+        "Ruggedness or smoothness (autocorrelation).",
+        "Size/connectivity of neighborhoods can affect how easily LS escapes or avoids traps."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 28,
+      "question": "What are the basic operators of crossover? Describe crossover and recombination.",
+      "answers": [
+        "Basic forms: single-point, multi-point, uniform crossover.",
+        "Recombination merges features of two or more parents to form offspring.",
+        "Goal: preserve good traits, introduce variety, explore new regions of solution space."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 29,
+      "question": "How do genetic algorithms and evolutionary algorithms relate to each other?",
+      "answers": [
+        "Genetic Algorithms (GAs) are a subset of Evolutionary Algorithms (EAs).",
+        "All EAs share principles of reproduction, mutation, selection, and inheritance.",
+        "GA specifically mimics biological chromosomes/genes, while other EAs might use different representations."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 30,
+      "question": "The idea of schemas and their role in evolutionary algorithms.",
+      "answers": [
+        "A schema is a pattern describing a subset of possible solutions (e.g., ‘1**0’).",
+        "Holland’s Schema Theorem suggests that short, fit schemas can grow exponentially under selection.",
+        "They provide insight into how partial ‘building blocks’ propagate."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 31,
+      "question": "Describe Large-scale Neighborhood Search (LNS).",
+      "answers": [
+        "Uses a ‘destroy and repair’ process: remove part of the solution, then reconstruct it (e.g., greedily).",
+        "Allows large jumps in solution space beyond a small local neighborhood.",
+        "Often combined with local search for final refinement."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 32,
+      "question": "What are the elements of an optimization problem?",
+      "answers": [
+        "An objective function to be maximized or minimized.",
+        "A decision space (all possible solutions).",
+        "Constraints defining feasible solutions.",
+        "A method to evaluate or compute the objective value."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 33,
+      "question": "Describe evolutionary algorithms.",
+      "answers": [
+        "Population-based iterative methods inspired by biological evolution.",
+        "Cycle of reproduction (crossover), variation (mutation), selection (survival of the fittest).",
+        "Stop when a condition is met (e.g., max generations, convergence)."
+      ]
+    },
+    {
+      "group": "Other",
+      "number": 34,
+      "question": "Discuss the idea of distance-preserving recombination operators. Give an example.",
+      "answers": [
+        "Such operators preserve common features of both parents, aiming to keep distance from each parent limited.",
+        "For TSP, an operator might keep shared edges from both parents, then fill in the rest to form a valid tour.",
+        "Encourages exploiting similarities between good solutions."
+      ]
+    }
+  ]
+  
