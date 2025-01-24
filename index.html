@@ -6,7 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- Favicon Links -->
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
-  <!-- <https://favicon.io/emoji-favicons/monkey> -->
+  <!-- TensorFlow.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.21.0/dist/tf.min.js"></script>
+  <!-- Universal Sentence Encoder -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder@1.3.3/dist/universal-sentence-encoder.min.js"></script>
   <style>
     /* ---------- Light Theme (default) ---------- */
     :root {
@@ -19,6 +22,10 @@
       --border-radius: 6px;
       --answer-bg-light: #f0f8ff; /* Light bluish */
       --answer-bg-dark: #2a3a4a;  /* Darker bluish for dark theme */
+      --validate-btn-bg: #e67e22;
+      --validate-btn-hover: #d35400;
+      --validate-result-color: #27ae60;
+      --validate-result-color-negative: #c0392b;
     }
 
     /* ---------- Dark Theme Overrides ---------- */
@@ -29,6 +36,11 @@
       --card-shadow: rgba(0, 0, 0, 0.3);
       --accent-color: #2980b9;
       --accent-hover: #3498db;
+      --answer-bg-light: #2a3a4a; /* Adjusted for dark theme */
+      --validate-btn-bg: #e67e22;
+      --validate-btn-hover: #d35400;
+      --validate-result-color: #27ae60;
+      --validate-result-color-negative: #c0392b;
     }
 
     /* ---------- Global Layout & Container ---------- */
@@ -127,14 +139,23 @@
     .buttons-row button {
       color: #fff;
       border: none;
-      padding: 10px 16px;
+      padding: 10px 20px;
       border-radius: var(--border-radius);
       cursor: pointer;
       transition: background-color 0.3s;
       font-size: 0.95rem;
+      min-width: 100px;
+      flex: 1;
     }
 
     /* Specific Button Styles */
+    #validateBtn {
+      background-color: var(--validate-btn-bg);
+    }
+    #validateBtn:hover {
+      background-color: var(--validate-btn-hover);
+    }
+
     #askGPTBtn {
       background-color: purple;
     }
@@ -182,20 +203,19 @@
     }
 
     /* Disabled button styles */
-    .navigation-buttons button:disabled {
+    .navigation-buttons button:disabled,
+    .buttons-row button:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
 
     /* Show/Hide Answer Toggle arrow icons */
     #toggleAnswerBtn.active::after {
-      content: '▲';
-      margin-left: 6px;
+      content: ' ▲';
       font-size: 0.8rem;
     }
     #toggleAnswerBtn::after {
-      content: '▼';
-      margin-left: 6px;
+      content: ' ▼';
       font-size: 0.8rem;
     }
 
@@ -210,6 +230,19 @@
     }
     [data-theme="dark"] #completedMessage {
       color: #bbb;
+    }
+
+    /* Validate Result */
+    #validateResult {
+      margin-top: 10px;
+      font-weight: bold;
+      display: none;
+    }
+    .validate-success {
+      color: var(--validate-result-color);
+    }
+    .validate-failure {
+      color: var(--validate-result-color-negative);
     }
 
     /* ---------- Theme Toggle Button ---------- */
@@ -275,6 +308,8 @@
       ></textarea>
 
       <div class="buttons-row">
+        <!-- Validate Button -->
+        <button id="validateBtn" disabled>Check Answer</button>
         <button id="askGPTBtn">Ask ChatGPT</button>
         <button id="toggleAnswerBtn">Show Answer</button>
       </div>
@@ -285,11 +320,14 @@
         <div id="answerContent" class="answer-text"></div>
       </div>
 
+      <!-- Validation Result -->
+      <div id="validateResult"></div>
+
       <!-- Navigation buttons -->
       <div class="navigation-buttons">
-        <button id="prevBtn">Previous</button>
+        <button id="prevBtn">← Previous</button>
         <button id="restartBtn">Restart Quiz</button>
-        <button id="nextBtn">Next</button>
+        <button id="nextBtn">Next →</button>
       </div>
     </div>
 
@@ -353,6 +391,30 @@
     const completedMessageEl = document.getElementById('completedMessage');
     const questionSectionEl = document.getElementById('questionSection');
 
+    const validateBtn = document.getElementById('validateBtn');
+    const validateResultEl = document.getElementById('validateResult');
+
+    // TensorFlow.js Model
+    let useModel = null;
+    // You can raise or lower this threshold to be more or less strict.
+    const THRESHOLD = 75;
+
+    // Load Universal Sentence Encoder model
+    async function loadUSEModel() {
+      try {
+        useModel = await use.load();
+        console.log('Universal Sentence Encoder model loaded.');
+        validateBtn.disabled = false;
+      } catch (error) {
+        console.error('Error loading Universal Sentence Encoder model:', error);
+        alert('Failed to load AI model for validation. The "Validate" feature will be unavailable.');
+        validateBtn.disabled = true;
+      }
+    }
+
+    // Initialize the model on page load
+    loadUSEModel();
+
     // Load questions, then shuffle if necessary
     fetch('questions.json')
       .then(resp => resp.json())
@@ -391,6 +453,7 @@
           prevBtn.disabled = true;
           nextBtn.disabled = true;
           restartBtn.disabled = true; // Disable restart if no questions
+          validateBtn.disabled = true;
         }
       })
       .catch(err => {
@@ -400,6 +463,7 @@
         prevBtn.disabled = true;
         nextBtn.disabled = true;
         restartBtn.disabled = true; // Disable restart on error
+        validateBtn.disabled = true;
       });
 
     // Display a question by index
@@ -408,13 +472,14 @@
 
       completedMessageEl.style.display = 'none';
       questionSectionEl.style.display = 'block';
+      validateResultEl.style.display = 'none';
 
       const q = questions[index];
       const total = questions.length;
 
       questionNumberEl.textContent = `Question ${index + 1} of ${total}`;
       questionTextEl.innerHTML = q.question + ' <i>(id:' + q.number + ' ' + q.group + ')</i>';
-      
+
       // Set the textarea value to the saved answer or empty string
       answerInputEl.value = userAnswers[index] || '';
 
@@ -426,22 +491,23 @@
       toggleAnswerBtn.textContent = 'Show Answer';
       toggleAnswerBtn.classList.remove('active');
 
-      // If "answers" is an array, create a bullet list; otherwise just a paragraph
+      // Hide validation result
+      validateResultEl.style.display = 'none';
+
+      // If "answers" is an array, just join it into one string for display.
       let answersStr = '';
       if (Array.isArray(q.answers)) {
-        answersStr = `<ul style="margin-left:20px;">` +
-          q.answers.map(a => `<li>${a}</li>`).join('') +
-          `</ul>`;
+        answersStr = q.answers.join(' ');
       } else {
-        answersStr = `<p>${q.answers}</p>`;
+        answersStr = q.answers;
       }
-      answerContentEl.innerHTML = answersStr;
+      answerContentEl.textContent = answersStr;
 
       // Update navigation buttons
       prevBtn.disabled = (index === 0);
       nextBtn.disabled = (index === total - 1);
       restartBtn.disabled = false; // Enable restart button
-      nextBtn.textContent = 'Next';
+      nextBtn.textContent = 'Next →';
     }
 
     // Next button
@@ -496,6 +562,7 @@
             prevBtn.disabled = true;
             nextBtn.disabled = true;
             restartBtn.disabled = true; // Disable restart on error
+            validateBtn.disabled = true;
           });
       }
     });
@@ -526,7 +593,7 @@
       }
 
       const prompt = `Question: ${questionText}\n\nMy answer:\n${userAnswer}\n\nPlease verify correctness and provide any improvements.`;
-      const chatGPTUrl = `https://chat.openai.com/?temporary-chat=true&model=gpt-4o&hints=search&q=${encodeURIComponent(prompt)}`;
+      const chatGPTUrl = `https://chat.openai.com/?temporary-chat=true&model=gpt-4&hints=search&q=${encodeURIComponent(prompt)}`;
       window.open(chatGPTUrl, '_blank');
     });
 
@@ -564,13 +631,86 @@
     // Save current index to localStorage whenever it's updated
     // This is already handled in the next and prev button event listeners
 
-    // ---------- Save Current Index on Page Unload ----------
-    window.addEventListener('beforeunload', () => {
-      saveCurrentIndex();
-      // 'userAnswers' are already saved on input.
-      // 'shuffledQuestions' are stored when assigned.
+    // ---------- Validate Button Logic ----------
+    validateBtn.addEventListener('click', async () => {
+      if (!useModel) {
+        alert('AI model is not loaded yet. Please wait.');
+        return;
+      }
+
+      const userAnswer = answerInputEl.value.trim();
+      if (!userAnswer) {
+        alert('Please enter your answer before validating.');
+        return;
+      }
+
+      // Convert correct answer to a single string (if array) for embedding
+      const q = questions[currentIndex];
+      let correctAnswer = '';
+      if (Array.isArray(q.answers)) {
+        correctAnswer = q.answers.join(' ');
+      } else {
+        correctAnswer = q.answers;
+      }
+
+      try {
+        // Show loading state
+        validateBtn.disabled = true;
+        const originalText = validateBtn.textContent;
+        validateBtn.textContent = 'Checking...';
+
+        // Encode sentences
+        const embeddings = await useModel.embed([userAnswer, correctAnswer]);
+        const embeddingArray = embeddings.arraySync();
+
+        const userEmbedding = embeddingArray[0];
+        const correctEmbedding = embeddingArray[1];
+
+        // Compute cosine similarity
+        const similarity = cosineSimilarity(userEmbedding, correctEmbedding);
+        const similarityPercent = (similarity * 100).toFixed(2);
+
+        // Display the result
+        validateResultEl.style.display = 'block';
+        if (similarityPercent >= THRESHOLD) { 
+          validateResultEl.textContent = `Good job! Your answer matches the correct answer with a similarity of ${similarityPercent}%.`;
+          validateResultEl.classList.remove('validate-failure');
+          validateResultEl.classList.add('validate-success');
+        } else {
+          validateResultEl.textContent = `Similarity is ${similarityPercent}%. Consider reviewing the correct answer.`;
+          validateResultEl.classList.remove('validate-success');
+          validateResultEl.classList.add('validate-failure');
+        }
+
+        // Restore button state
+        validateBtn.textContent = originalText;
+        validateBtn.disabled = false;
+
+      } catch (error) {
+        console.error('Error during validation:', error);
+        alert('An error occurred while validating your answer. Please try again.');
+        // Restore button state in case of error
+        validateBtn.textContent = 'Check Answer';
+        validateBtn.disabled = false;
+      }
     });
 
+    // Function to compute cosine similarity between two vectors
+    function cosineSimilarity(vecA, vecB) {
+      let dotProduct = 0;
+      let normA = 0;
+      let normB = 0;
+      for (let i = 0; i < vecA.length; i++) {
+        dotProduct += vecA[i] * vecB[i];
+        normA += vecA[i] * vecA[i];
+        normB += vecB[i] * vecB[i];
+      }
+      if (normA === 0 || normB === 0) {
+        return 0;
+      } else {
+        return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+      }
+    }
   </script>
 </body>
 </html>
