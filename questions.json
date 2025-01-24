@@ -456,6 +456,190 @@
         "For TSP, an operator might keep shared edges from both parents, then fill in the rest to form a valid tour.",
         "Encourages exploiting similarities between good solutions."
       ]
+    },
+    {
+        "group": "GPT",
+        "number": 1,
+        "question": "Describe the difference between genetic drift and natural selection in evolutionary algorithms.",
+        "answers": [
+            "Genetic drift refers to the random convergence of solutions due to iterative recombination, even without selection pressure.",
+            "Natural selection is the probabilistic preference for fitter solutions, driving optimization."
+        ]
+    },
+    {
+        "group": "GPT",
+        "number": 2,
+        "question": "What are the key steps in the general scheme of evolutionary algorithms?",
+        "answers": [
+            "Generate a randomized initial population.",
+            "Apply crossover and mutation to create offspring.",
+            "Select the next generation from the combined parent and offspring populations.",
+            "Repeat until stopping criteria are met."
+        ]
+    },
+    {
+        "group": "GPT",
+        "number": 3,
+        "question": "Discuss the impact of population size on evolutionary algorithms.",
+        "answers": [
+            "A larger population size increases diversity and avoids premature convergence but requires more computational resources.",
+            "A smaller population size converges faster but risks losing diversity and getting trapped in local optima."
+        ]
+    },
+    {
+        "group": "GPT",
+        "number": 4,
+        "question": "Explain the concept of schema in evolutionary algorithms.",
+        "answers": [
+            "A schema is a pattern representing a subset of possible solutions.",
+            "Low-order and short-length schemas are more likely to propagate in successive generations.",
+            "Holland’s Schema Theorem explains the exponential growth of advantageous schemas."
+        ]
+    },
+    {
+        "group": "GPT",
+        "number": 5,
+        "question": "What mechanisms help prevent premature convergence in evolutionary algorithms?",
+        "answers": [
+            "Increasing population diversity using techniques like fitness sharing or crowding.",
+            "Using island models to maintain sub-population variation.",
+            "Introducing random immigrants to inject new genetic material."
+        ]
+    },
+    {
+        "group": "GPT",
+        "number": 6,
+        "question": "How does elitism influence the behavior of evolutionary algorithms?",
+        "answers": [
+            "Elitism guarantees that the best solutions are preserved across generations.",
+            "It accelerates convergence but may reduce diversity, risking premature convergence."
+        ]
+    },
+    {
+        "group": "GPT",
+        "number": 7,
+        "question": "What is the role of hybrid evolutionary algorithms in optimization?",
+        "answers": [
+            "Combine global search capabilities of evolutionary algorithms with the intensification of local search.",
+            "They achieve faster convergence to high-quality solutions by balancing exploration and exploitation."
+        ]
+    },
+    {
+        "group": "GPT",
+        "number": 8,
+        "question": "Describe the concept of delta evaluation in local search.",
+        "answers": [
+            "Delta evaluation calculates the incremental change in the objective function caused by a move.",
+            "This avoids recomputing the entire objective function and significantly speeds up neighbor evaluations."
+        ]
+    },
+    {
+        "group": "GPT",
+        "number": 9,
+        "question": "What are the advantages of using island models in evolutionary algorithms?",
+        "answers": [
+            "Island models help maintain diversity by isolating sub-populations.",
+            "Occasional migrations between islands combine traits and avoid stagnation."
+        ]
+    },
+    {
+        "group": "GPT",
+        "number": 10,
+        "question": "Explain how penalty functions handle constraints in evolutionary algorithms.",
+        "answers": [
+            "Penalty functions reduce the fitness of solutions violating constraints.",
+            "The penalty strength is adjusted to balance feasibility and optimization."
+        ]
+    },
+    {
+      "group": "GPT",
+      "number": 11,
+      "question": "What are the key advantages of hybridizing local search with evolutionary algorithms?",
+      "answers": [
+          "Local search quickly refines solutions to local optima, improving solution quality.",
+          "Evolutionary algorithms maintain diversity and explore the global search space."
+      ]
+    },
+    {
+        "group": "GPT",
+        "number": 12,
+        "question": "How does the use of multiple neighborhoods improve local search performance?",
+        "answers": [
+            "Different neighborhoods explore different regions of the solution space.",
+            "Switching neighborhoods helps escape local optima that are optimal only in a single neighborhood."
+        ]
+    },
+    {
+        "group": "GPT",
+        "number": 13,
+        "question": "Describe the concept of fitness sharing in evolutionary algorithms.",
+        "answers": [
+            "Fitness sharing reduces the fitness of similar solutions to promote diversity.",
+            "It ensures that resources are spread among niches in the population."
+        ]
+    },
+    {
+        "group": "GPT",
+        "number": 14,
+        "question": "What are the benefits of using natural encoding in evolutionary algorithms?",
+        "answers": [
+            "Natural encoding simplifies crossover and ensures feasibility.",
+            "It often preserves important problem-specific traits during recombination."
+        ]
+    },
+    {
+        "group": "GPT",
+        "number": 15,
+        "question": "Discuss the purpose and functionality of the Tabu list in Tabu search.",
+        "answers": [
+            "The Tabu list prevents revisiting solutions or moves recently used, avoiding cycles.",
+            "It helps explore new regions of the solution space by discouraging immediate backtracking."
+        ]
+    },
+    {
+        "group": "GPT",
+        "number": 16,
+        "question": "How can constraints be handled in metaheuristic algorithms?",
+        "answers": [
+            "Using penalty functions to reduce fitness for constraint violations.",
+            "Repair operators that fix infeasible solutions.",
+            "Intermediate encoding to ensure only feasible solutions are generated."
+        ]
+    },
+    {
+        "group": "GPT",
+        "number": 17,
+        "question": "What is the difference between steady-state and generational evolutionary algorithms?",
+        "answers": [
+            "Steady-state algorithms update the population incrementally, replacing only a few individuals at a time.",
+            "Generational algorithms replace the entire population in each generation."
+        ]
+    },
+    {
+        "group": "GPT",
+        "number": 18,
+        "question": "What are the main features of quantum Grover’s algorithm in optimization?",
+        "answers": [
+            "It provides a quadratic speedup by searching a space of size N in O(√N) iterations.",
+            "It amplifies the probability of optimal solutions using quantum superposition and interference."
+        ]
+    },
+    {
+        "group": "GPT",
+        "number": 19,
+        "question": "Explain the principle of adaptive local search.",
+        "answers": [
+            "Adaptive local search modifies its parameters (e.g., neighborhood size) based on performance.",
+            "It balances intensification and diversification dynamically during the search process."
+        ]
+    },
+    {
+        "group": "GPT",
+        "number": 20,
+        "question": "How do metaheuristics balance exploration and exploitation?",
+        "answers": [
+            "Exploration searches broadly for diverse solutions, avoiding premature convergence.",
+            "Exploitation focuses on refining solutions in promising regions for higher quality."
+        ]
     }
-  ]
-  
+]
