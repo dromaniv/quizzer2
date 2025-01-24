@@ -79,7 +79,7 @@
     /* Auto-resizing textarea */
     textarea {
       width: 100%;
-      min-height: 80px;
+      min-height: 40px; /* Reduced min-height to allow smaller sizes */
       padding: 10px;
       font-size: 0.95rem;
       border: 1px solid #ccc;
@@ -402,6 +402,9 @@
       
       // Set the textarea value to the saved answer or empty string
       answerInputEl.value = userAnswers[index] || '';
+
+      // Trigger auto-resize to fit the current content
+      autoResize.call(answerInputEl);
 
       // Hide official answer
       officialAnswerEl.style.display = 'none';
