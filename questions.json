@@ -488,26 +488,6 @@
     },
     {
         "group": "GPT",
-        "number": 4,
-        "question": "Explain the concept of schema in evolutionary algorithms.",
-        "answers": [
-            "A schema is a pattern representing a subset of possible solutions.",
-            "Low-order and short-length schemas are more likely to propagate in successive generations.",
-            "Holland’s Schema Theorem explains the exponential growth of advantageous schemas."
-        ]
-    },
-    {
-        "group": "GPT",
-        "number": 5,
-        "question": "What mechanisms help prevent premature convergence in evolutionary algorithms?",
-        "answers": [
-            "Increasing population diversity using techniques like fitness sharing or crowding.",
-            "Using island models to maintain sub-population variation.",
-            "Introducing random immigrants to inject new genetic material."
-        ]
-    },
-    {
-        "group": "GPT",
         "number": 6,
         "question": "How does elitism influence the behavior of evolutionary algorithms?",
         "answers": [
@@ -535,30 +515,12 @@
     },
     {
         "group": "GPT",
-        "number": 9,
-        "question": "What are the advantages of using island models in evolutionary algorithms?",
-        "answers": [
-            "Island models help maintain diversity by isolating sub-populations.",
-            "Occasional migrations between islands combine traits and avoid stagnation."
-        ]
-    },
-    {
-        "group": "GPT",
         "number": 10,
         "question": "Explain how penalty functions handle constraints in evolutionary algorithms.",
         "answers": [
             "Penalty functions reduce the fitness of solutions violating constraints.",
             "The penalty strength is adjusted to balance feasibility and optimization."
         ]
-    },
-    {
-      "group": "GPT",
-      "number": 11,
-      "question": "What are the key advantages of hybridizing local search with evolutionary algorithms?",
-      "answers": [
-          "Local search quickly refines solutions to local optima, improving solution quality.",
-          "Evolutionary algorithms maintain diversity and explore the global search space."
-      ]
     },
     {
         "group": "GPT",
@@ -598,30 +560,11 @@
     },
     {
         "group": "GPT",
-        "number": 16,
-        "question": "How can constraints be handled in metaheuristic algorithms?",
-        "answers": [
-            "Using penalty functions to reduce fitness for constraint violations.",
-            "Repair operators that fix infeasible solutions.",
-            "Intermediate encoding to ensure only feasible solutions are generated."
-        ]
-    },
-    {
-        "group": "GPT",
         "number": 17,
         "question": "What is the difference between steady-state and generational evolutionary algorithms?",
         "answers": [
             "Steady-state algorithms update the population incrementally, replacing only a few individuals at a time.",
             "Generational algorithms replace the entire population in each generation."
-        ]
-    },
-    {
-        "group": "GPT",
-        "number": 18,
-        "question": "What are the main features of quantum Grover’s algorithm in optimization?",
-        "answers": [
-            "It provides a quadratic speedup by searching a space of size N in O(√N) iterations.",
-            "It amplifies the probability of optimal solutions using quantum superposition and interference."
         ]
     },
     {
