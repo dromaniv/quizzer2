@@ -585,12 +585,6 @@
 
       const questionText = questions[currentIndex].question || "";
       const userAnswer = answerInputEl.value.trim();
-
-      if (!userAnswer) {
-        alert("Please type your answer first!");
-        return;
-      }
-
       const prompt = `Question: ${questionText}\n\nMy answer:\n${userAnswer}\n\nPlease verify correctness and provide any improvements.`;
       const chatGPTUrl = `https://chat.openai.com/?temporary-chat=true&model=gpt-4&hints=search&q=${encodeURIComponent(prompt)}`;
       window.open(chatGPTUrl, '_blank');
