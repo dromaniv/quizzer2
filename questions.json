@@ -633,8 +633,8 @@
         "number": 19,
         "question": "Explain the principle of adaptive multistart local search.",
         "answers": [
-            "Adaptive multistart local search modifies its parameters (e.g., neighborhood size) based on performance.",
-            "It balances intensification and diversification dynamically during the search process."
+            "Adaptive multistart local search combines multiple local searches from different starting points.",
+            "It adapts the search strategy based on the quality of solutions found so far."
         ]
     },
     {
@@ -663,6 +663,15 @@
         "Beam search evaluates multiple forward options but only commits to the first insertion.",
         "It partially expands the search tree by considering the best K options at each level.",
         "Combines breadth-first search with heuristic pruning to balance exploration and computational cost."
+      ]
+    },
+    {
+      "group": "GPT",
+      "number": 23,
+      "question": "Explain the principle of adaptive large-scale local search.",
+      "answers": [
+          "Adaptive large-scale local search modifies its parameters (e.g., neighborhood size) based on performance.",
+          "It balances intensification and diversification dynamically during the search process."
       ]
     }
 ]
