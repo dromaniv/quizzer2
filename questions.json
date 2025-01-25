@@ -44,6 +44,7 @@
       "number": 5,
       "question": "How and why should the duration (number of iterations) of the local search and the quality of the local optima change during the operation of a good hybrid evolutionary algorithm?",
       "answers": [
+        "(Actually I'm not sure if this answer is correct)",
         "In early stages, use shorter local searches to maintain diversity and avoid premature convergence.",
         "In later stages, use longer local searches to intensify and refine promising regions for higher-quality local optima."
       ]
