@@ -644,5 +644,14 @@
             "Exploration searches broadly for diverse solutions, avoiding premature convergence.",
             "Exploitation focuses on refining solutions in promising regions for higher quality."
         ]
+    },
+    {
+      "group": "GPT",
+      "number": 21,
+      "question": "What is an oracle in a black-box optimization context?",
+      "answers": [
+          "An oracle is a function with an unknown implementation.",
+          "It calculates the objective function value for a given solution"
+      ]
     }
 ]
