@@ -623,7 +623,8 @@
         "question": "Discuss the concepts of intensification and diversification in optimization algorithms.",
         "answers": [
             "Intensification focuses on refining solutions in promising regions for higher quality.",
-            "Diversification searches broadly for diverse solutions, avoiding premature convergence."
+            "Diversification searches broadly for diverse solutions, avoiding premature convergence.",
+            "Balancing these strategies is crucial for effective optimization."
         ]
     },
     {
