@@ -619,6 +619,15 @@
     },
     {
         "group": "GPT",
+        "number": 18,
+        "question": "Discuss the concepts of intensification and diversification in optimization algorithms.",
+        "answers": [
+            "Intensification focuses on refining solutions in promising regions for higher quality.",
+            "Diversification searches broadly for diverse solutions, avoiding premature convergence."
+        ]
+    },
+    {
+        "group": "GPT",
         "number": 19,
         "question": "Explain the principle of adaptive local search.",
         "answers": [
