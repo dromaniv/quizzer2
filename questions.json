@@ -600,7 +600,7 @@
     },
     {
       "group": "GPT",
-      "number": 15,
+      "number": 16,
       "question": "Explain the problem of language (lingo) in the context of optimization algorithms.",
       "answers": [
           "Different optimization algorithms use specific terminology and concepts.",
