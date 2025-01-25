@@ -654,5 +654,15 @@
           "An oracle is a function with an unknown implementation.",
           "It calculates the objective function value for a given solution"
       ]
+    },
+    {
+      "group": "GPT",
+      "number": 22,
+      "question": "What is beam search?",
+      "answers": [
+        "Beam search evaluates multiple forward options but only commits to the first insertion.",
+        "It partially expands the search tree by considering the best K options at each level.",
+        "Combines breadth-first search with heuristic pruning to balance exploration and computational cost."
+      ]
     }
 ]
