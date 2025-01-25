@@ -604,7 +604,7 @@
       "question": "Explain the problem of language (lingo) in the context of optimization algorithms.",
       "answers": [
           "Different optimization algorithms use specific terminology and concepts.",
-          "That makes them easy to understand but hides the underlying similarities between algorithms.",
+          "Metaphors make them easy to understand but hides the underlying similarities between algorithms.",
           "Question whether it possible to translate the concepts and principles of one algorithm to another."
       ]
   },
