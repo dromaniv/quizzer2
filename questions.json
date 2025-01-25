@@ -631,9 +631,9 @@
     {
         "group": "GPT",
         "number": 19,
-        "question": "Explain the principle of adaptive local search.",
+        "question": "Explain the principle of adaptive multistart local search.",
         "answers": [
-            "Adaptive local search modifies its parameters (e.g., neighborhood size) based on performance.",
+            "Adaptive multistart local search modifies its parameters (e.g., neighborhood size) based on performance.",
             "It balances intensification and diversification dynamically during the search process."
         ]
     },
