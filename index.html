@@ -516,11 +516,6 @@
         showQuestion(currentIndex);
         saveCurrentIndex();
       }
-      // Optionally, show completed message if last question is reached
-      if (currentIndex === questions.length - 1) {
-        completedMessageEl.style.display = 'block';
-        questionSectionEl.style.display = 'none';
-      }
     });
 
     // Prev button
